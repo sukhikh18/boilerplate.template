@@ -1,0 +1,26 @@
+.post {
+    display: flex;
+    flex-direction: column;
+    @include md(display, block);
+    @include row-float();
+
+    &__preview {
+        @include col();
+        @include size-md(3);
+        @include md(float, left);
+        margin-bottom: 1rem;
+    }
+
+    &__name {
+        order: -1;
+        @include col();
+        @include size-md(9);
+        @include md(float, right);
+    }
+
+    &__content {
+        @include col();
+        @include size-md(9);
+        @include md(float, right);
+    }
+}

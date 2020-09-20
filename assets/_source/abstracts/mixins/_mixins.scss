@@ -1,0 +1,225 @@
+$vw-fallback: false;
+
+$media-hd: 1680px !default;
+
+$tpl-sm: 320px;
+$tpl-md: $media-md;
+$tpl-lg: $media-lg;
+$tpl-xl: $media-xl;
+$tpl-hd: 1920px;
+
+//  strip units helper function
+@function num($input) {
+    @return $input/($input * 0 + 1);
+}
+
+$baseFontSize : 16;
+@function rem($pixels, $context: $baseFontSize) {
+    @if (unitless($pixels)) {
+        $pixels: $pixels * 1px;
+    }
+
+    @if (unitless($context)) {
+        $context: $context * 1px;
+    }
+
+    @return $pixels / $context * 1rem;
+}
+
+$wsm: (1 / (num($tpl-sm) * 0.01)) * 1vw;
+$wmd: (1 / (num($tpl-md) * 0.01)) * 1vw;
+$wlg: (1 / (num($tpl-lg) * 0.01)) * 1vw;
+$wxl: (1 / (num($tpl-xl) * 0.01)) * 1vw;
+$whd: (1 / (num($tpl-hd) * 0.01)) * 1vw;
+
+//
+// Media Quires
+//
+@mixin from($min_width) {
+    @media screen and (min-width: $min_width + .02) {
+        @content;
+    }
+}
+
+@mixin to($max_width) {
+    @media screen and (max-width: $max_width) {
+        @content;
+    }
+}
+
+@mixin from-to($min_width, $max_width) {
+    @media screen and (min-width: $min_width + .02) and (max-width: $max_width) {
+        @content;
+    }
+}
+
+@mixin to-from($max_width, $min_width) {
+    @media screen and (max-width: $max_width) and (min-width: $min_width + .02) {
+        @content;
+    }
+}
+
+@mixin vw-hd( $context, $value ) {
+    @if $vw-fallback { #{$context}: num($value) * 1px; }
+    #{$context}: num($value) * $whd;
+}
+
+@mixin vw-xl( $context, $value ) {
+    @if $vw-fallback { #{$context}: num($value) * 1px; }
+    #{$context}: num($value) * $wxl;
+}
+
+@mixin vw-lg( $context, $value ) {
+    @if $vw-fallback { #{$context}: num($value) * 1px; }
+    #{$context}: num($value) * $wlg;
+}
+
+@mixin vw-md( $context, $value ) {
+    @if $vw-fallback { #{$context}: num($value) * 1px; }
+    #{$context}: num($value) * $wmd;
+}
+
+@mixin vw-sm( $context, $value ) {
+    @if $vw-fallback { #{$context}: num($value) * 1px; }
+    #{$context}: num($value) * $wsm;
+}
+
+// for example: fsize: 14px, sm-hd: 14 to 32 proportional, from hd: 32;
+@mixin font-size( $size-from, $size-to: null, $min: $media-sm, $max: $media-hd ) {
+    font-size: $size-from;
+
+    @if $size-to {
+        // start stretch from
+        @include from( $min ) {
+            // from + ={to - from} * (100vw - min) / ={max - min}
+            font-size: calc( #{$size-from} + #{num($size-to) - num($size-from)} *
+                (100vw - #{$min}) / #{num($max) - num($min)} );
+        }
+        // end stretch from
+        @include from( $max ) {
+            font-size: $size-to;
+        }
+    }
+}
+
+//
+// Blocks
+//
+// Define vertical, horizontal, or both ABSOLUTE* position
+// * Must be in absolute or relative parent
+//
+@mixin absolute-center($position: both) {
+    position: absolute;
+
+    @if $position == 'vertical' {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    @else if $position == 'horizontal' {
+        left: 50%;
+        transform: translate(-50%);
+    }
+    @else if $position == 'both' {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+//
+// Images
+//
+$retina: "only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx)";
+@mixin retina-background-image($file, $type, $width, $height) {
+    background-image: url($file + '.' + $type);
+    @media #{$retina} {
+        background-image: url($file + '@2x.' + $type);
+        background-size: $width $height;
+    }
+}
+
+@mixin circle() {
+    overflow: hidden;
+    border-radius: 50%;
+
+    img {
+        clip-path: circle(50% at 50% 50%);
+    }
+}
+
+//
+// Advance
+// Are you need this?
+//
+@mixin columns( $count: 2 ) {
+    column-count: $count;
+
+    > div, li {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+    }
+}
+
+@mixin two-columns($direct: horizontal, $min-media: $media-xl) {
+    @media screen and (min-width: $min-media) {
+        @if $direct == vertical {
+            @include columns(2);
+        }
+        @else {
+            position: relative;
+            overflow: hidden;
+
+            > div, li {
+                float: left;
+                width: 49%;
+
+                &:nth-child(2n+1) {
+                    clear: both;
+                }
+                &:nth-child(2n+2) {
+                    float: right;
+                }
+            }
+        }
+    }
+}
+@mixin scale($max-width: 100%, $max-width-hover: 120%, $transition: .25s ease) {
+    & {
+        > img {
+            max-width: $max-width;
+            width: 999%;
+            transition: $transition max-width;
+
+            &:hover {
+                max-width: $max-width-hover;
+            }
+        }
+    }
+
+    .touch & {
+        > img {
+            max-width: $max-width-hover;
+        }
+    }
+}
+
+@mixin thumbnail-center($width, $height) {
+    & {
+        position: relative;
+
+        @if $width {
+            width: $width;
+        }
+
+        @if $height {
+            height: $height;
+        }
+    }
+
+    > img {
+        display: block;
+        width: 100%;
+        @include absolute-center();
+    }
+}

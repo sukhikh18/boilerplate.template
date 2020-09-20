@@ -1,0 +1,52 @@
+//
+// Nav
+//
+
+.site__navigation {
+    width: 100%;
+    margin-bottom: 2rem;
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .navbar {
+        z-index: 999;
+        background: #fff;
+        padding: 0;
+        border-radius: 0;
+
+        .nav-link {
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+        }
+
+        .nav-link,
+        .nav-link:hover,
+        .nav-link:focus {
+            text-decoration: none;
+        }
+
+        @include from-to($media-lg, $media-xl) {
+            > .container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .navbar-collapse {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    }
+
+    .navbar-toggler {
+        // reset bootstrap defaults
+        padding: 0 10px;
+        border: 0;
+        border-radius: 0;
+    }
+}

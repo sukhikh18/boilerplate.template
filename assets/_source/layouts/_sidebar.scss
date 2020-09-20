@@ -1,0 +1,15 @@
+//
+// Sidebar
+//
+
+.site__sidebar {
+    &__title {
+        @include font-size(18px, 22px);
+    }
+
+    @include from($media-lg) {
+        &__title {
+            margin-top: 4.5rem;
+        }
+    }
+}

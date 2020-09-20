@@ -1,0 +1,72 @@
+//
+// Columns 5
+//
+
+// Import variables and mixins.
+@import "abstracts/abstracts";
+
+/* Five columns in bootstrap row (2.4 * 5 = 12) */
+.col-2-4,
+.col-sm-2-4,
+.col-md-2-4,
+.col-lg-2-4,
+.col-xl-2-4 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-2-4 {
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+
+.offset-2-4 {
+    margin-left: 20%;
+}
+
+@include from($media-sm) {
+    .col-sm-2-4 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+
+    .offset-sm-2-4 {
+        margin-left: 20%;
+    }
+}
+
+@include from($media-md) {
+    .col-md-2-4 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+
+    .offset-md-2-4 {
+        margin-left: 20%;
+    }
+}
+
+@include from($media-lg) {
+    .col-lg-2-4 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+
+    .offset-lg-2-4 {
+        margin-left: 20%;
+    }
+}
+
+@include from($media-xl) {
+    .col-xl-2-4 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+
+    .offset-xl-2-4 {
+        margin-left: 20%;
+    }
+}
